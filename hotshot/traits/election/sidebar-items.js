@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["dynamic","randomized_committee","static_committee","static_committee_leader_two_views"]};
