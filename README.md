@@ -177,7 +177,7 @@ heaptrack $(fd -I "counter*" -t x | rg release) --ignored -- test_stress_dht_man
 # palette provides memory statistics, omission will provide cpu cycle stats as colors
 # NOTE: must be run as root on macos
 flamegraph --palette=mem $(fd -I "counter*" -t x | rg release) --ignored -- test_stress_dht_one_round
-# code coveragte statistics
+# code coverage statistics
 cargo-llvm-cov llvm-cov --test=test_stress_dht_many_round --workspace --all-targets --release --html --output-path lcov.html
 ```
 
