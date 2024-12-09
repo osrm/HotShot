@@ -551,7 +551,6 @@
 <a href="#551" id="551">551</a>
 <a href="#552" id="552">552</a>
 <a href="#553" id="553">553</a>
-<a href="#554" id="554">554</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (c) 2021-2024 Espresso Systems (espressosys.com)
 // This file is part of the HotShot repository.
 
@@ -671,8 +670,7 @@
                         }
                     }
                     ProposalDependency::ViewSyncCert =&gt; {
-                        <span class="kw">if let </span>HotShotEvent::ViewSyncFinalizeCertificate2Recv(view_sync_cert) =
-                            event
+                        <span class="kw">if let </span>HotShotEvent::ViewSyncFinalizeCertificateRecv(view_sync_cert) = event
                         {
                             view_sync_cert.view_number()
                         } <span class="kw">else </span>{
@@ -779,7 +777,7 @@
                     qc_dependency.mark_as_completed(event);
                 }
             },
-            HotShotEvent::ViewSyncFinalizeCertificate2Recv(<span class="kw">_</span>) =&gt; {
+            HotShotEvent::ViewSyncFinalizeCertificateRecv(<span class="kw">_</span>) =&gt; {
                 view_sync_dependency.mark_as_completed(event);
             }
             HotShotEvent::VidDisperseSend(<span class="kw">_</span>, <span class="kw">_</span>) =&gt; {
@@ -991,14 +989,14 @@
                     Arc::clone(<span class="kw-2">&amp;</span>event),
                 )<span class="question-mark">?</span>;
             }
-            HotShotEvent::ViewSyncFinalizeCertificate2Recv(certificate) =&gt; {
+            HotShotEvent::ViewSyncFinalizeCertificateRecv(certificate) =&gt; {
                 <span class="kw">let </span>epoch_number = <span class="self">self</span>.consensus.read().<span class="kw">await</span>.cur_epoch();
 
                 <span class="macro">ensure!</span>(
                     certificate
                         .is_valid_cert(
                             <span class="self">self</span>.quorum_membership.stake_table(epoch_number),
-                            <span class="self">self</span>.quorum_membership.success_threshold(),
+                            <span class="self">self</span>.quorum_membership.success_threshold(epoch_number),
                             <span class="kw-2">&amp;</span><span class="self">self</span>.upgrade_lock
                         )
                         .<span class="kw">await</span>,
@@ -1056,17 +1054,17 @@
             HotShotEvent::ViewChange(view, <span class="kw">_</span>) | HotShotEvent::Timeout(view) =&gt; {
                 <span class="self">self</span>.cancel_tasks(<span class="kw-2">*</span>view);
             }
-            HotShotEvent::HighQcSend(qc, _sender) =&gt; {
+            HotShotEvent::HighQcSend(qc, ..) =&gt; {
                 <span class="macro">ensure!</span>(qc.view_number() &gt; <span class="self">self</span>.highest_qc.view_number());
                 <span class="kw">let </span>epoch_number = <span class="self">self</span>.consensus.read().<span class="kw">await</span>.cur_epoch();
                 <span class="macro">ensure!</span>(
                     qc.is_valid_cert(
                         <span class="self">self</span>.quorum_membership.stake_table(epoch_number),
-                        <span class="self">self</span>.quorum_membership.success_threshold(),
+                        <span class="self">self</span>.quorum_membership.success_threshold(epoch_number),
                         <span class="kw-2">&amp;</span><span class="self">self</span>.upgrade_lock
                     )
                     .<span class="kw">await</span>,
-                    <span class="macro">warn!</span>(<span class="string">"Qurom certificate {:?} was invalid"</span>, qc.data())
+                    <span class="macro">warn!</span>(<span class="string">"Quorum certificate {:?} was invalid"</span>, qc.data())
                 );
                 <span class="self">self</span>.highest_qc = qc.clone();
             }

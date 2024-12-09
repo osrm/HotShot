@@ -347,6 +347,116 @@
 <a href="#347" id="347">347</a>
 <a href="#348" id="348">348</a>
 <a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a>
+<a href="#397" id="397">397</a>
+<a href="#398" id="398">398</a>
+<a href="#399" id="399">399</a>
+<a href="#400" id="400">400</a>
+<a href="#401" id="401">401</a>
+<a href="#402" id="402">402</a>
+<a href="#403" id="403">403</a>
+<a href="#404" id="404">404</a>
+<a href="#405" id="405">405</a>
+<a href="#406" id="406">406</a>
+<a href="#407" id="407">407</a>
+<a href="#408" id="408">408</a>
+<a href="#409" id="409">409</a>
+<a href="#410" id="410">410</a>
+<a href="#411" id="411">411</a>
+<a href="#412" id="412">412</a>
+<a href="#413" id="413">413</a>
+<a href="#414" id="414">414</a>
+<a href="#415" id="415">415</a>
+<a href="#416" id="416">416</a>
+<a href="#417" id="417">417</a>
+<a href="#418" id="418">418</a>
+<a href="#419" id="419">419</a>
+<a href="#420" id="420">420</a>
+<a href="#421" id="421">421</a>
+<a href="#422" id="422">422</a>
+<a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
+<a href="#425" id="425">425</a>
+<a href="#426" id="426">426</a>
+<a href="#427" id="427">427</a>
+<a href="#428" id="428">428</a>
+<a href="#429" id="429">429</a>
+<a href="#430" id="430">430</a>
+<a href="#431" id="431">431</a>
+<a href="#432" id="432">432</a>
+<a href="#433" id="433">433</a>
+<a href="#434" id="434">434</a>
+<a href="#435" id="435">435</a>
+<a href="#436" id="436">436</a>
+<a href="#437" id="437">437</a>
+<a href="#438" id="438">438</a>
+<a href="#439" id="439">439</a>
+<a href="#440" id="440">440</a>
+<a href="#441" id="441">441</a>
+<a href="#442" id="442">442</a>
+<a href="#443" id="443">443</a>
+<a href="#444" id="444">444</a>
+<a href="#445" id="445">445</a>
+<a href="#446" id="446">446</a>
+<a href="#447" id="447">447</a>
+<a href="#448" id="448">448</a>
+<a href="#449" id="449">449</a>
+<a href="#450" id="450">450</a>
+<a href="#451" id="451">451</a>
+<a href="#452" id="452">452</a>
+<a href="#453" id="453">453</a>
+<a href="#454" id="454">454</a>
+<a href="#455" id="455">455</a>
+<a href="#456" id="456">456</a>
+<a href="#457" id="457">457</a>
+<a href="#458" id="458">458</a>
+<a href="#459" id="459">459</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (c) 2021-2024 Espresso Systems (espressosys.com)
 // This file is part of the HotShot repository.
 
@@ -362,16 +472,18 @@
 <span class="kw">use </span>hotshot_types::{
     consensus::OuterConsensus,
     data::{Leaf2, QuorumProposal2, VidDisperseShare},
-    event::{Event, EventType},
+    event::{Event, EventType, LeafInfo},
     message::{Proposal, UpgradeLock},
     simple_vote::{QuorumData2, QuorumVote2},
     traits::{
+        block_contents::BlockHeader,
         election::Membership,
         node_implementation::{ConsensusTime, NodeImplementation, NodeType},
         signature_key::SignatureKey,
         storage::Storage,
         ValidatedState,
     },
+    utils::epoch_from_block_number,
     vote::HasViewNumber,
 };
 <span class="kw">use </span>tracing::instrument;
@@ -388,6 +500,96 @@
     quorum_vote::Versions,
 };
 
+<span class="doccomment">/// Handles starting the DRB calculation. Uses the seed previously stored in
+/// handle_quorum_proposal_validated_drb_calculation_seed
+</span><span class="kw">async fn </span>handle_quorum_proposal_validated_drb_calculation_start&lt;
+    TYPES: NodeType,
+    I: NodeImplementation&lt;TYPES&gt;,
+    V: Versions,
+&gt;(
+    proposal: <span class="kw-2">&amp;</span>QuorumProposal2&lt;TYPES&gt;,
+    task_state: <span class="kw-2">&amp;mut </span>QuorumVoteTaskState&lt;TYPES, I, V&gt;,
+) {
+    <span class="kw">let </span>current_epoch_number = TYPES::Epoch::new(epoch_from_block_number(
+        proposal.block_header.block_number(),
+        task_state.epoch_height,
+    ));
+
+    <span class="comment">// Start the new task if we're in the committee for this epoch
+    </span><span class="kw">if </span>task_state
+        .membership
+        .has_stake(<span class="kw-2">&amp;</span>task_state.public_key, current_epoch_number)
+    {
+        task_state
+            .drb_computations
+            .start_task_if_not_running(current_epoch_number + <span class="number">1</span>)
+            .<span class="kw">await</span>;
+    }
+}
+
+<span class="doccomment">/// Handles storing the seed for an upcoming DRB calculation.
+///
+/// We store the DRB computation seed 2 epochs in advance, if the decided block is the last but
+/// third block in the current epoch and we are in the quorum committee of the next epoch.
+///
+/// Special cases:
+/// * Epoch 0: No DRB computation since we'll transition to epoch 1 immediately.
+/// * Epoch 1 and 2: Use `[0u8; 32]` as the DRB result since when we first start the
+///   computation in epoch 1, the result is for epoch 3.
+///
+/// We don't need to handle the special cases explicitly here, because the first proposal
+/// with which we'll start the DRB computation is for epoch 3.
+</span><span class="kw">fn </span>handle_quorum_proposal_validated_drb_calculation_seed&lt;
+    TYPES: NodeType,
+    I: NodeImplementation&lt;TYPES&gt;,
+    V: Versions,
+&gt;(
+    proposal: <span class="kw-2">&amp;</span>QuorumProposal2&lt;TYPES&gt;,
+    task_state: <span class="kw-2">&amp;mut </span>QuorumVoteTaskState&lt;TYPES, I, V&gt;,
+    leaf_views: <span class="kw-2">&amp;</span>[LeafInfo&lt;TYPES&gt;],
+) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+    <span class="comment">// This is never none if we've reached a new decide, so this is safe to unwrap.
+    </span><span class="kw">let </span>decided_block_number = leaf_views
+        .last()
+        .unwrap()
+        .leaf
+        .block_header()
+        .block_number();
+
+    <span class="comment">// Skip if this is not the expected block.
+    </span><span class="kw">if </span>task_state.epoch_height != <span class="number">0 </span>&amp;&amp; (decided_block_number + <span class="number">3</span>) % task_state.epoch_height == <span class="number">0 </span>{
+        <span class="comment">// Cancel old DRB computation tasks.
+        </span><span class="kw">let </span>current_epoch_number = TYPES::Epoch::new(epoch_from_block_number(
+            decided_block_number,
+            task_state.epoch_height,
+        ));
+
+        task_state
+            .drb_computations
+            .garbage_collect(current_epoch_number);
+
+        <span class="comment">// Skip if we are not in the committee of the next epoch.
+        </span><span class="kw">if </span>task_state
+            .membership
+            .has_stake(<span class="kw-2">&amp;</span>task_state.public_key, current_epoch_number + <span class="number">1</span>)
+        {
+            <span class="kw">let </span>new_epoch_number = current_epoch_number + <span class="number">2</span>;
+            <span class="kw">let </span><span class="prelude-val">Ok</span>(drb_seed_input_vec) = bincode::serialize(<span class="kw-2">&amp;</span>proposal.justify_qc.signatures) <span class="kw">else </span>{
+                <span class="macro">bail!</span>(<span class="string">"Failed to serialize the QC signature."</span>);
+            };
+            <span class="kw">let </span><span class="prelude-val">Ok</span>(drb_seed_input) = drb_seed_input_vec.try_into() <span class="kw">else </span>{
+                <span class="macro">bail!</span>(<span class="string">"Failed to convert the serialized QC signature into a DRB seed input."</span>);
+            };
+
+            <span class="comment">// Store the drb seed input for the next calculation
+            </span>task_state
+                .drb_computations
+                .store_seed(new_epoch_number, drb_seed_input);
+        }
+    }
+    <span class="prelude-val">Ok</span>(())
+}
+
 <span class="doccomment">/// Handles the `QuorumProposalValidated` event.
 </span><span class="attr">#[instrument(skip_all, fields(id = task_state.id, view = <span class="kw-2">*</span>proposal.view_number))]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">async fn </span>handle_quorum_proposal_validated&lt;
@@ -402,6 +604,10 @@
         .upgrade_lock
         .version(proposal.view_number())
         .<span class="kw">await</span><span class="question-mark">?</span>;
+
+    <span class="kw">if </span>version &gt;= V::Epochs::VERSION {
+        handle_quorum_proposal_validated_drb_calculation_start(proposal, task_state).<span class="kw">await</span>;
+    }
 
     <span class="kw">let </span>LeafChainTraversalOutcome {
         new_locked_view_number,
@@ -484,13 +690,13 @@
         <span class="comment">// We don't need to hold this while we broadcast
         </span>drop(consensus_writer);
 
-        <span class="comment">// First, send an update to everyone saying that we've reached a decide
+        <span class="comment">// Send an update to everyone saying that we've reached a decide
         </span>broadcast_event(
             Event {
                 view_number: decided_view_number,
                 event: EventType::Decide {
-                    leaf_chain: Arc::new(leaf_views),
-                    <span class="comment">// This is never *not* none if we've reached a new decide, so this is safe to unwrap.
+                    leaf_chain: Arc::new(leaf_views.clone()),
+                    <span class="comment">// This is never none if we've reached a new decide, so this is safe to unwrap.
                     </span>qc: Arc::new(new_decide_qc.unwrap()),
                     block_size: included_txns.map(|txns| txns.len().try_into().unwrap()),
                 },
@@ -499,6 +705,14 @@
         )
         .<span class="kw">await</span>;
         <span class="macro">tracing::debug!</span>(<span class="string">"Successfully sent decide event"</span>);
+
+        <span class="kw">if </span>version &gt;= V::Epochs::VERSION {
+            handle_quorum_proposal_validated_drb_calculation_seed(
+                proposal,
+                task_state,
+                <span class="kw-2">&amp;</span>leaf_views,
+            )<span class="question-mark">?</span>;
+        }
     }
 
     <span class="prelude-val">Ok</span>(())
@@ -644,12 +858,17 @@
     private_key: &lt;TYPES::SignatureKey <span class="kw">as </span>SignatureKey&gt;::PrivateKey,
     upgrade_lock: UpgradeLock&lt;TYPES, V&gt;,
     view_number: TYPES::View,
-    epoch_number: TYPES::Epoch,
+    epoch_height: u64,
     storage: Arc&lt;RwLock&lt;I::Storage&gt;&gt;,
     leaf: Leaf2&lt;TYPES&gt;,
     vid_share: Proposal&lt;TYPES, VidDisperseShare&lt;TYPES&gt;&gt;,
     extended_vote: bool,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;()&gt; {
+    <span class="kw">let </span>epoch_number = TYPES::Epoch::new(epoch_from_block_number(
+        leaf.block_header().block_number(),
+        epoch_height,
+    ));
+
     <span class="macro">ensure!</span>(
         quorum_membership.has_stake(<span class="kw-2">&amp;</span>public_key, epoch_number),
         <span class="macro">info!</span>(
@@ -662,6 +881,7 @@
     </span><span class="kw">let </span>vote = QuorumVote2::&lt;TYPES&gt;::create_signed_vote(
         QuorumData2 {
             leaf_commit: leaf.commit(),
+            epoch: epoch_number,
         },
         view_number,
         <span class="kw-2">&amp;</span>public_key,
