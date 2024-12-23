@@ -711,6 +711,24 @@
 <a href="#711" id="711">711</a>
 <a href="#712" id="712">712</a>
 <a href="#713" id="713">713</a>
+<a href="#714" id="714">714</a>
+<a href="#715" id="715">715</a>
+<a href="#716" id="716">716</a>
+<a href="#717" id="717">717</a>
+<a href="#718" id="718">718</a>
+<a href="#719" id="719">719</a>
+<a href="#720" id="720">720</a>
+<a href="#721" id="721">721</a>
+<a href="#722" id="722">722</a>
+<a href="#723" id="723">723</a>
+<a href="#724" id="724">724</a>
+<a href="#725" id="725">725</a>
+<a href="#726" id="726">726</a>
+<a href="#727" id="727">727</a>
+<a href="#728" id="728">728</a>
+<a href="#729" id="729">729</a>
+<a href="#730" id="730">730</a>
+<a href="#731" id="731">731</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright (c) 2021-2024 Espresso Systems (espressosys.com)
 // This file is part of the HotShot repository.
 
@@ -902,6 +920,7 @@
                 <span class="kw-2">&amp;</span>TestInstanceState::default(),
             )
             .<span class="kw">await</span>,
+            next_epoch_high_qc: <span class="prelude-val">None</span>,
             async_delay_config: launcher.metadata.async_delay_config,
             restart_contexts: HashMap::new(),
             channel_generator: launcher.resource_generator.channel_generator,
@@ -1036,6 +1055,7 @@
 
     <span class="kw">pub async fn </span>init_builders&lt;B: TestBuilderImplementation&lt;TYPES&gt;&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
+        num_nodes: usize,
     ) -&gt; (Vec&lt;Box&lt;<span class="kw">dyn </span>BuilderTask&lt;TYPES&gt;&gt;&gt;, Vec&lt;Url&gt;, Url) {
         <span class="kw">let </span>config = <span class="self">self</span>.launcher.resource_generator.config.clone();
         <span class="kw">let </span><span class="kw-2">mut </span>builder_tasks = Vec::new();
@@ -1045,7 +1065,7 @@
             <span class="kw">let </span>builder_url =
                 Url::parse(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">"http://localhost:{builder_port}"</span>)).expect(<span class="string">"Invalid URL"</span>);
             <span class="kw">let </span>builder_task = B::start(
-                config.num_nodes_with_stake.into(),
+                num_nodes,
                 builder_url.clone(),
                 B::Config::default(),
                 metadata.changes.clone(),
@@ -1110,8 +1130,14 @@
         <span class="kw">let </span><span class="kw-2">mut </span>results = <span class="macro">vec!</span>[];
         <span class="kw">let </span>config = <span class="self">self</span>.launcher.resource_generator.config.clone();
 
+        <span class="comment">// TODO This is only a workaround. Number of nodes changes from epoch to epoch. Builder should be made epoch-aware.
+        </span><span class="kw">let </span>temp_memberships = &lt;TYPES <span class="kw">as </span>NodeType&gt;::Membership::new(
+            config.known_nodes_with_stake.clone(),
+            config.known_da_nodes.clone(),
+        );
+        <span class="kw">let </span>num_nodes = temp_memberships.total_nodes(TYPES::Epoch::new(<span class="number">0</span>));
         <span class="kw">let </span>(<span class="kw-2">mut </span>builder_tasks, builder_urls, fallback_builder_url) =
-            <span class="self">self</span>.init_builders::&lt;B&gt;().<span class="kw">await</span>;
+            <span class="self">self</span>.init_builders::&lt;B&gt;(num_nodes).<span class="kw">await</span>;
 
         <span class="kw">if </span><span class="self">self</span>.launcher.metadata.start_solver {
             <span class="self">self</span>.add_solver(builder_urls.clone()).<span class="kw">await</span>;
@@ -1130,11 +1156,12 @@
             <span class="self">self</span>.next_node_id += <span class="number">1</span>;
             <span class="macro">tracing::debug!</span>(<span class="string">"launch node {}"</span>, i);
 
-            <span class="kw">let </span>memberships = &lt;TYPES <span class="kw">as </span>NodeType&gt;::Membership::new(
-                config.known_nodes_with_stake.clone(),
-                config.known_da_nodes.clone(),
-            );
-            config.builder_urls = builder_urls
+            <span class="comment">//let memberships =Arc::new(RwLock::new(&lt;TYPES as NodeType&gt;::Membership::new(
+            //config.known_nodes_with_stake.clone(),
+            //config.known_da_nodes.clone(),
+            //)));
+
+            </span>config.builder_urls = builder_urls
                 .clone()
                 .try_into()
                 .expect(<span class="string">"Non-empty by construction"</span>);
@@ -1170,7 +1197,10 @@
                             context: LateNodeContext::UninitializedContext(
                                 LateNodeContextParameters {
                                     storage,
-                                    memberships,
+                                    memberships: &lt;TYPES <span class="kw">as </span>NodeType&gt;::Membership::new(
+                                        config.known_nodes_with_stake.clone(),
+                                        config.known_da_nodes.clone(),
+                                    ),
                                     config,
                                     marketplace_config,
                                 },
@@ -1194,7 +1224,10 @@
                     <span class="kw">let </span>hotshot = <span class="self">Self</span>::add_node_with_config(
                         node_id,
                         network.clone(),
-                        memberships,
+                        &lt;TYPES <span class="kw">as </span>NodeType&gt;::Membership::new(
+                            config.known_nodes_with_stake.clone(),
+                            config.known_da_nodes.clone(),
+                        ),
                         initializer,
                         config,
                         validator_config,
@@ -1214,7 +1247,10 @@
                 uninitialized_nodes.push((
                     node_id,
                     network,
-                    memberships,
+                    &lt;TYPES <span class="kw">as </span>NodeType&gt;::Membership::new(
+                        config.known_nodes_with_stake.clone(),
+                        config.known_da_nodes.clone(),
+                    ),
                     config,
                     storage,
                     marketplace_config,
@@ -1249,7 +1285,7 @@
                 <span class="self">self</span>.launcher.metadata.clone(),
                 node_id,
                 network.clone(),
-                memberships,
+                Arc::new(RwLock::new(memberships)),
                 config.clone(),
                 storage,
                 marketplace_config,
@@ -1304,7 +1340,7 @@
             private_key,
             node_id,
             config,
-            memberships,
+            Arc::new(RwLock::new(memberships)),
             network,
             initializer,
             ConsensusMetricsValue::default(),
@@ -1321,7 +1357,7 @@
     </span><span class="kw">pub async fn </span>add_node_with_config_and_channels(
         node_id: u64,
         network: Network&lt;TYPES, I&gt;,
-        memberships: TYPES::Membership,
+        memberships: Arc&lt;RwLock&lt;TYPES::Membership&gt;&gt;,
         initializer: HotShotInitializer&lt;TYPES&gt;,
         config: HotShotConfig&lt;TYPES::SignatureKey&gt;,
         validator_config: ValidatorConfig&lt;TYPES::SignatureKey&gt;,
